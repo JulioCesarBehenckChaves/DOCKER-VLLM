@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  vllm:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-qwen3
+    ports:
+      - "8000:8000"
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: >
+      --model unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF
+      --tokenizer Qwen/Qwen3-Coder-30B-A3B-Instruct
+      --max-model-len 32768
+      --trust-remote-code
+      --port 8000
+    networks:
+      - llm-network
+
+  # Exemplo de outro container acessando o vLLM
+  app-agent:
+    image: python:3.10-slim
+    container_name: app-agent
+    depends_on:
+      - vllm
+    environment:
+      - VLLM_URL=http://vllm:8000/v1
+    command: tail -f /dev/null
+    networks:
+      - llm-network
+
+networks:
+  llm-network:
+    driver: bridge
