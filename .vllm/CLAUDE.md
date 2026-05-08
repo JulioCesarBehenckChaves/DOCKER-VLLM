@@ -34,6 +34,22 @@ docker compose run --rm agents bash
 Para acesar o modelo Docker model:
 `http://host.docker.internal:12434/v1`
 
+Alguns detalhes do Docker hub models:
+
+(ou 65536 / 131072 se tiver VRAM suficiente; Gemma4 suporta até 256k+)
+
+docker model configure --context-size 262144 docker.io/qwen3.5:35B-A3B-Q4_K_M
+docker model configure --context-size 262144 docker.io/gemma4:26B
+docker model configure --context-size 262144 docker.io/gemma4:latest
+docker model configure --context-size 262144 docker.io/gemma4:31B
+
+--> para limpar a GPU
+docker model unload --all
+--> para ver os modelos carregados
+docker model list
+--> para carregar um modelo
+docker model load docker.io/qwen3.5:35B-A3B-Q4_K_M
+
 ## Como fazer para usar em outra pasta de trabalho?
 
 Levar para o outro repo, numa subpasta ".agente-local":
