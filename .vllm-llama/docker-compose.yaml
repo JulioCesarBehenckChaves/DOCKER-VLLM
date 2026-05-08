@@ -1,0 +1,9 @@
+services:
+  vllm:
+    image: vllm/vllm-openai:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_NAME=z-lab/LLaMA3.1-8B-Instruct-DFlash-UltraChat
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
