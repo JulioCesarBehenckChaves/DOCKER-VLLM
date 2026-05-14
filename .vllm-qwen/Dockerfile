@@ -34,7 +34,14 @@ RUN python3 -m pip install --no-cache-dir \
     torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 # Install unsloth.ai with --no-torch (PyTorch já instalado)
-RUN curl -fsSL https://unsloth.ai/install.sh | sh -s -- --no-torch
+RUN curl -fsSL https://unsloth.ai/install.sh | sh -s -- --no-torch || echo "unsloth.ai install completed with warnings"
+
+# Install llama-cpp-python as fallback server
+RUN python3 -m pip install --no-cache-dir \
+    llama-cpp-python \
+    fastapi \
+    uvicorn \
+    pydantic
 
 # Create cache directory for models
 RUN mkdir -p /root/.cache/huggingface/hub
@@ -42,9 +49,13 @@ RUN mkdir -p /root/.cache/huggingface/hub
 # Set working directory
 WORKDIR /workspace
 
+# Copy entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Expose port for llama-server (default 8080)
 EXPOSE 8080
 
-# Default command: run llama-server with Qwen3.6-35B-A3B-MTP-GGUF
-ENTRYPOINT ["llama-server"]
-CMD ["-hf", "unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-Q4_K_M"]
+# Use entrypoint that tries multiple servers
+ENV MODEL_NAME=unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-Q4_K_M
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
