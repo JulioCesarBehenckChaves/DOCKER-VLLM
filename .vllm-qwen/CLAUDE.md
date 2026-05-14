@@ -10,11 +10,12 @@ This directory is an experimental workspace for testing the Qwen 3.6-35B languag
 
 **✅ Solved**: Docker/unsloth.ai integration with GPU acceleration implemented.
 
-- **Base Image**: NVIDIA CUDA 12.4.1 runtime (GPU-enabled)
-- **GPU**: RTX3090 (24GB VRAM) auto-detected and enabled
+- **Base Image**: Ubuntu 22.04 (optimized for compatibility)
+- **GPU Support**: RTX3090 (24GB VRAM) via docker --gpus or nvidia-docker
 - **Model**: Qwen3.6-35B-A3B-MTP-GGUF (Q4_K_M quantization) via HuggingFace
 - **API**: OpenAI-compatible endpoint at `http://localhost:8080/v1`
 - **Performance**: Expected ~50-100 tokens/sec with RTX3090 acceleration
+- **CUDA**: Installed dynamically by unsloth.ai on first run (cleaner builds)
 
 ## Previous Approach (Docker Models)
 

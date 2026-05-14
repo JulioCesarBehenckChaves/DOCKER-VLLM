@@ -43,12 +43,13 @@ docker compose logs -f qwen-mtp
 
 ### Detalhes
 
-- **Base image**: NVIDIA CUDA 12.4.1 + Ubuntu 24.04 (GPU acelerado)
+- **Base image**: Ubuntu 22.04 (otimizado para compatibilidade)
 - **Runtime**: unsloth.ai com llama-server
 - **Modelo**: Qwen3.6-35B-A3B-MTP-GGUF (quantizado em Q4_K_M)
-- **GPU**: RTX3090 (24GB VRAM) - detectada automaticamente
+- **GPU**: RTX3090 (24GB VRAM) - suportada via docker --gpus ou nvidia-docker
 - **Porta**: 8080 (mapeado para localhost:8080)
 - **Cache**: Volumes locais para modelos e cache do Hugging Face
+- **CUDA**: Instalado dinamicamente pelo unsloth.ai na primeira execução
 
 ### Performance Esperado
 
