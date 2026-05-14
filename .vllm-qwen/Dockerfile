@@ -8,7 +8,7 @@ ENV PATH="/root/.unsloth/bin:$PATH"
 ENV CUDA_HOME=/usr/local/cuda
 ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
-# Install system dependencies + CUDA utils
+# Install system dependencies (sem nvidia-utils que não existe)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     wget \
@@ -20,24 +20,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     pkg-config \
     ca-certificates \
-    cuda-toolkit-12-1 \
-    nvidia-utils \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Verify CUDA installation
-RUN echo "=== CUDA Info ===" && \
-    which nvcc || echo "nvcc not found" && \
-    which nvidia-smi && nvidia-smi || echo "nvidia-smi not found" && \
-    ls -la /usr/local/cuda/bin/ | grep -E "(nvidia-smi|nvcc)" || echo "CUDA binaries not found"
 
 # Upgrade pip
 RUN python3 -m pip install --upgrade pip
 
-# Install PyTorch with CUDA explicitly
+# Install PyTorch with CUDA 12.1 explicitly
 RUN python3 -m pip install --no-cache-dir \
     torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
-# Install unsloth.ai with CUDA already available
+# Install unsloth.ai with PyTorch/CUDA already in place
 RUN curl -fsSL https://unsloth.ai/install.sh | sh
 
 # Create cache directory for models
