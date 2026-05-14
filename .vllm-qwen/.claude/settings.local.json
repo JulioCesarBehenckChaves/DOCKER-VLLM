@@ -4,7 +4,22 @@
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\julio.chaves\\\\PycharmProjects\\\\Ferramentas\\\\DOCKER-VLLM\\\\.vllm-qwen\" -Force -Recurse -Depth 2)",
       "Bash(Select-Object FullName, PSIsContainer)",
       "Bash(Format-Table -AutoSize)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git reset *)",
+      "Bash(git commit -m ' *)",
+      "Bash(docker compose *)",
+      "Bash(docker image *)",
+      "Bash(findstr -i image)",
+      "Bash(cp Dockerfile Dockerfile.unsloth)",
+      "Bash(cp Dockerfile.simple Dockerfile)",
+      "Bash(git commit -m 'Corrigir Dockerfile - usar apenas unsloth.ai *)",
+      "Bash(git commit -m 'Configurar Docker para detectar e usar GPU RTX3090 *)",
+      "Bash(git commit -m 'Usar nvidia/cuda como base image para GPU detection *)",
+      "Bash(git commit -m 'Instalar CUDA explicitamente e PyTorch com CUDA *)",
+      "Bash(git commit -m 'Remover pacotes que não existem, manter só o essencial *)",
+      "Bash(git commit -m 'Adicionar libcurl4-openssl-dev para unsloth.ai *)",
+      "Bash(git commit -m 'Adicionar CUDA bin ao PATH e remover PyTorch pre-install *)",
+      "Bash(git commit -m 'Estratégia final: PyTorch CUDA explícito + unsloth com --no-torch *)"
     ]
   }
 }
