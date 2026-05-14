@@ -8,7 +8,7 @@ ENV PATH="/root/.unsloth/bin:$PATH"
 ENV CUDA_HOME=/usr/local/cuda
 ENV LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
-# Install system dependencies (sem nvidia-utils que não existe)
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     wget \
@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake \
     pkg-config \
     ca-certificates \
+    libcurl4-openssl-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip
