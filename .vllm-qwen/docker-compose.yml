@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  qwen-mtp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qwen-mtp-server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./models:/workspace/models
+      - ./cache:/root/.cache
+    environment:
+      - HOME=/root
+      # GPU/CUDA environment
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    stdin_open: true
+    tty: true
+    # GPU support enabled for RTX3090
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
