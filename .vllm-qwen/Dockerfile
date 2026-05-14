@@ -4,6 +4,7 @@ FROM ubuntu:22.04
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 ENV PATH="/root/.unsloth/bin:$PATH"
+ENV CUDA_VISIBLE_DEVICES=0
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
