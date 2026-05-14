@@ -3,22 +3,30 @@ FROM ubuntu:22.04
 # Set environment variables for GPU/CUDA
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV PATH="/root/.unsloth/bin:$PATH"
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     wget \
     git \
     build-essential \
     python3 \
     python3-pip \
+    python3-venv \
     cmake \
     pkg-config \
     ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install unsloth.ai
+# Verify curl is available
+RUN which curl && curl --version
+
+# Install unsloth.ai - critical installation
 RUN curl -fsSL https://unsloth.ai/install.sh | sh
+
+# Create cache directory for models
+RUN mkdir -p /root/.cache/huggingface/hub
 
 # Set working directory
 WORKDIR /workspace
