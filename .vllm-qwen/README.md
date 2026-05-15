@@ -31,6 +31,11 @@ O servidor estará acessível em `http://localhost:8080/v1` (OpenAI compatible A
 docker compose up -d
 ```
 
+**Entrar no container**
+```bash  
+docker compose exec qwen-mtp-server bash
+```
+
 **Parar o servidor:**
 ```bash
 docker compose down

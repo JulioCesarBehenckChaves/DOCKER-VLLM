@@ -1,0 +1,52 @@
+services:
+  unsloth:
+    # Usa a imagem oficial do Unsloth (pré-compilada com CUDA, PyTorch, Jupyter)
+    # Documentação: https://unsloth.ai/docs/get-started/install/docker
+    image: unsloth/unsloth:latest
+    container_name: unsloth-server
+
+    # Portas expostas
+    #   Jupyter Lab: 8888 (padrão) ou 8000 (alternativo)
+    #   SSH: 2222 (mapeada para 22 do container)
+    ports:
+      - "8888:8888"    # Jupyter Lab
+      - "8000:8000"    # Jupyter Lab (alternativo)
+      - "2222:22"      # SSH (mapeado para porta não-padrão no host)
+
+    # Volumes para persistência de dados
+    volumes:
+      # Monte seu diretório de trabalho para /workspace/work
+      - C:/Users/julio.chaves/PycharmProjects/Escola-de-Matematica-Aplicada/cdmc-prof-julio:/workspace/work
+      # (Opcional) Cache do HuggingFace para não redownloadar modelos
+      - ./cache:/home/unsloth/.cache/huggingface
+
+    # Configuração do container
+    environment:
+      # Senha para o Jupyter Lab
+      - JUPYTER_PASSWORD=unsloth
+      # Porta do Jupyter dentro do container
+      - JUPYTER_PORT=8888
+      # Senha para sudo do usuário unsloth
+      - USER_PASSWORD=unsloth
+      # (Opcional) Chave SSH pública para acesso seguro
+      # - SSH_KEY=ssh-rsa AAA... seu@email
+
+      # GPU/CUDA environment
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+
+    # GPU support
+    # No Linux: requer NVIDIA Container Toolkit instalado
+    # No Windows: requer Docker Desktop com WSL2 + CUDA
+    #   (https://docs.docker.com/desktop/features/gpu/)
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+    # Manter container rodando mesmo sem Jupyter (modo interativo)
+    stdin_open: true
+    tty: true
